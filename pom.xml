@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.onap.dcae</groupId>
+    <artifactId>dcae-service-change-handler</artifactId>
+    <version>1.1.0</version>
+    <!-- Not sure why clojure-maven-plugin says packaging should be "clojure" -->
+    <packaging>jar</packaging>
+
+    <!-- This maybe an issue -->
+    <repositories>
+        <repository>
+            <id>clojars.org</id>
+            <url>http://clojars.org/repo</url>
+        </repository>
+        <!-- TODO: Fill in the onap maven repository info -->
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.clojure</groupId>
+            <artifactId>clojure</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cheshire</groupId>
+            <artifactId>cheshire</artifactId>
+            <version>5.6.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openecomp.sdc</groupId>
+            <artifactId>sdc-distribution-client</artifactId>
+            <version>1.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.taoensso</groupId>
+            <artifactId>timbre</artifactId>
+            <version>4.7.4</version>
+        </dependency>
+        <!-- Does magic so traditional Java loggers show up -->
+        <dependency>
+            <groupId>com.fzakaria</groupId>
+            <artifactId>slf4j-timbre</artifactId>
+            <version>0.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>clj-http</groupId>
+            <artifactId>clj-http</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bovinegenius</groupId>
+            <artifactId>exploding-fish</artifactId>
+            <version>0.3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>clj-yaml</groupId>
+            <artifactId>clj-yaml</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- This seems to be the only place to specify the application entrypoint -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>sch.core</mainClass>
+                            <classpathPrefix>dependency</classpathPrefix>
+                        </manifest>
+                    </archive>
+                    <finalName>${project.artifactId}</finalName>                   
+                </configuration>
+            </plugin>
+            <!-- Used to copy in the dependencies when packaging JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Explicitly use a certain version of Java. May not be needed -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.theoryinpractise</groupId>
+                <artifactId>clojure-maven-plugin</artifactId>
+                <version>1.8.1</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <sourceDirectories>
+                        <sourceDirectory>src</sourceDirectory>
+                    </sourceDirectories>
+                    <mainClass>sch.core</mainClass>
+                </configuration>
+                <executions>
+                  <execution>
+                      <id>compile</id>
+                      <phase>compile</phase>
+                      <goals>
+                          <goal>compile</goal>
+                      </goals>
+                  </execution>
+                </executions>
+            </plugin>
+
+            <!-- Package an Uber jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <!-- Run shade goal on package phase -->
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <!-- NOTE: Need the following transformer else gets "Could not resolve type id 'https' into a subtype" error
+                                Solution found from here:
+                                http://stackoverflow.com/questions/27543060/why-does-dropwizard-configuration-is-not-working
+                                Some more context here:
+                                https://github.com/dropwizard/dropwizard/issues/455 -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <!-- add Main-Class to manifest file -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>sch.core</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.13</version>
+                <configuration>
+                    <maintainer>Michael Hwang</maintainer>
+                    <imageName>dcae-service-change-handler</imageName>
+                    <imageTags>
+                        <imageTag>${project.version}</imageTag>
+                    </imageTags>
+                    <baseImage>java:8-jre</baseImage>
+                    <entryPoint>["java", "-jar", "/opt/${project.build.finalName}.jar", "prod", "/opt/config.yml"]</entryPoint>
+                    <!-- copy the service's jar file from target into the root directory of the image -->
+                    <resources>
+                        <resource>
+                            <targetPath>/opt</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>

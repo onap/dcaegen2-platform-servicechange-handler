@@ -1,0 +1,32 @@
+{
+  "uuid": "3ff44fa9-9372-45dc-a432-46f7ff8c5103",
+  "invariantUUID": "9eaf59ee-2fe0-48a9-8d20-6f9b09ba807b",
+  "name": "DcaeTestService",
+  "version": "2.0",
+  "toscaModelURL": "https://mtanjv9sdcb21.cip.com:8443/sdc/v1/catalog/services/3ff44fa9-9372-45dc-a432-46f7ff8c5103/toscaModel",
+  "category": "Mobility",
+  "lifecycleState": "CERTIFIED",
+  "distributionStatus": "DISTRIBUTED",
+  "lastUpdaterFullName": "MICHAEL SHITRIT",
+  "resources": [
+    {
+      "resourceInstanceName": "DcaeTestVF 2",
+      "resourceName": "DcaeTestVF",
+      "resourceInvariantUUID": "3d5927fc-a28e-41e9-9e79-57289aa7f754",
+      "resourceVersion": "2.0",
+      "resoucreType": "VF",
+      "resourceUUID": "d8d91013-5bc5-4600-9079-fae3cefd4ca7",
+      "artifacts": [
+        {
+          "artifactName": "dcaetestvf2_modules.json",
+          "artifactType": "VF_MODULES_METADATA",
+          "artifactURL": "/sdc/v1/catalog/services/3ff44fa9-9372-45dc-a432-46f7ff8c5103/resourceInstances/dcaetestvf2/artifacts/a5998f90-7335-4b30-a988-dbfd39147a9c",
+          "artifactDescription": "Auto-generated VF Modules information artifact",
+          "artifactChecksum": "ZDc1MTcxMzk4ODk4N2U5MzMxOTgwMzYzZTI0MTg5Y2U=",
+          "artifactUUID": "a5998f90-7335-4b30-a988-dbfd39147a9c",
+          "artifactVersion": "1"
+        }
+      ]
+    }
+  ]
+}

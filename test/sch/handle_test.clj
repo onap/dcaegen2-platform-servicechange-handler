@@ -1,0 +1,38 @@
+; ============LICENSE_START=======================================================
+; org.onap.dcae
+; ================================================================================
+; Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+; ================================================================================
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+;
+;      http://www.apache.org/licenses/LICENSE-2.0
+;
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+; ============LICENSE_END=========================================================
+;
+; ECOMP is a trademark and service mark of AT&T Intellectual Property.
+
+(ns sch.handle-test
+  (:use (clojure test))
+  (:require [cheshire.core :refer [parse-stream]]
+            [sch.handle :refer :all])
+  )
+
+(deftest deployed-funcs-test
+  (let [requests [{:asdcResourceId "123" :typeName "pizza"}
+                  {:asdcResourceId "456" :typeName "hamburger"}
+                  {:asdcResourceId "789" :typeName "hotdog"}]
+        attempted [{:asdcResourceId "456" :typeName "hamburger"}
+                   {:asdcResourceId "789" :typeName "hotdog"}]
+        completed [{:asdcResourceId "789" :typeName "hotdog"}]
+        ]
+    (is (= (deployed-ok attempted completed) completed))
+    (is (= (deployed-error attempted completed) [(first attempted)]))
+    (is (= (deployed-already requests attempted) [(first requests)]))
+    ))
