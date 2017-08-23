@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_10f5f082",
+        "filename": "fixtures/5_delete.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2017-08-23T18:22:40Z",
+      "side": 1,
+      "message": "the hostname appears to be suspect\n\n  \"toscaModelURL\": \"https://mtanjv9sdcb21.cip.com:8443/sdc/v1/catalog/services/3ff44fa9-9372-45dc-a432-46f7ff8c5103/toscaModel\",",
+      "revId": "16a9c5b8c6b91ea856450d99cdfa6a18c57b7f1b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
