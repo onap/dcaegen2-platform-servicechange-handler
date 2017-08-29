@@ -33,7 +33,7 @@
         <dependency>
             <groupId>org.openecomp.sdc</groupId>
             <artifactId>sdc-distribution-client</artifactId>
-            <version>1.1.4</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.taoensso</groupId>
