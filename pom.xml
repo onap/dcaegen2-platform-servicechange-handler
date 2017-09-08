@@ -7,6 +7,7 @@
     <groupId>org.onap.dcae</groupId>
     <artifactId>dcae-service-change-handler</artifactId>
     <version>1.1.0</version>
+    <name>dcaegen2-platform-servicechange-handler</name>
     <!-- Not sure why clojure-maven-plugin says packaging should be "clojure" -->
     <packaging>jar</packaging>
 
