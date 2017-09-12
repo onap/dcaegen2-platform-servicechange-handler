@@ -3,10 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.onap.oparent</groupId>
+        <artifactId>oparent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
 
-    <groupId>org.onap.dcae</groupId>
-    <artifactId>dcae-service-change-handler</artifactId>
-    <version>1.1.0</version>
+
+    <groupId>org.onap.dcae.platform</groupId>
+    <artifactId>servicechange-handler</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <name>dcaegen2-platform-servicechange-handler</name>
     <!-- Not sure why clojure-maven-plugin says packaging should be "clojure" -->
     <packaging>jar</packaging>
