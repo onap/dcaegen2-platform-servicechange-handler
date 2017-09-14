@@ -176,7 +176,7 @@
                         <imageTag>${project.version}</imageTag>
                     </imageTags>
                     <baseImage>java:8-jre</baseImage>
-                    <entryPoint>["java", "-jar", "/opt/${project.build.finalName}.jar", "prod", "/opt/config.yml"]</entryPoint>
+                    <entryPoint>["java", "-jar", "/opt/${project.build.finalName}.jar", "prod", "http://consul:8500/v1/kv/service-change-handler?raw=true"]</entryPoint>
                     <!-- copy the service's jar file from target into the root directory of the image -->
                     <resources>
                         <resource>
@@ -186,6 +186,39 @@
                         </resource>
                     </resources>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>build-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>tag-image-timestamped-version</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <image>${project.artifactId}</image>
+                            <newName>${onap.nexus.dockerregistry.daily}/onap/${project.groupId}.${project.artifactId}:${project.version}-${maven.build.timestamp}</newName>
+                            <pushImage>true</pushImage>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tag-image-latest-version</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <image>${project.artifactId}</image>
+                            <newName>${onap.nexus.dockerregistry.daily}/onap/${project.groupId}.${project.artifactId}:LATEST</newName>
+                            <pushImage>true</pushImage>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
