@@ -177,9 +177,10 @@
                 <version>0.4.13</version>
                 <configuration>
                     <maintainer>Michael Hwang</maintainer>
-                    <imageName>${project.artifactId}</imageName>
+                    <imageName>${onap.nexus.dockerregistry.daily}/onap/${project.groupId}.${project.artifactId}</imageName>
                     <imageTags>
-                        <imageTag>${project.version}</imageTag>
+                        <imageTag>${project.version}-${maven.build.timestamp}</imageTag>
+                        <imageTag>latest</imageTag>
                     </imageTags>
                     <baseImage>java:8-jre</baseImage>
                     <entryPoint>["java", "-jar", "/opt/${project.build.finalName}.jar", "prod", "http://consul:8500/v1/kv/service-change-handler?raw=true"]</entryPoint>
@@ -192,39 +193,6 @@
                         </resource>
                     </resources>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>build-image</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>tag-image-timestamped-version</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>tag</goal>
-                        </goals>
-                        <configuration>
-                            <image>${project.artifactId}</image>
-                            <newName>${onap.nexus.dockerregistry.daily}/onap/${project.groupId}.${project.artifactId}:${project.version}-${maven.build.timestamp}</newName>
-                            <pushImage>true</pushImage>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>tag-image-latest-version</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>tag</goal>
-                        </goals>
-                        <configuration>
-                            <image>${project.artifactId}</image>
-                            <newName>${onap.nexus.dockerregistry.daily}/onap/${project.groupId}.${project.artifactId}:LATEST</newName>
-                            <pushImage>true</pushImage>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
         </plugins>
