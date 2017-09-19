@@ -77,6 +77,10 @@
     </dependencies>
 
     <build>
+        <!-- Needed for the clojure plugin to point to the tests directory. Didn't work as
+             a configuration option under the clojure plugin -->
+        <testSourceDirectory>test</testSourceDirectory>
+
         <plugins>
             <!-- This seems to be the only place to specify the application entrypoint -->
             <plugin>
@@ -138,6 +142,13 @@
                           <goal>compile</goal>
                       </goals>
                   </execution>
+                  <execution>
+                      <id>test</id>
+                      <phase>test</phase>
+                      <goals>
+                          <goal>test</goal>
+                      </goals>
+                  </execution>
                 </executions>
             </plugin>
 
@@ -194,6 +205,14 @@
                     </resources>
                     <serverId>${onap.nexus.dockerregistry.daily}</serverId>
                 </configuration>
+            </plugin>
+
+            <!-- Added in support for sonar but sonar doesn't support Clojure so there's no
+                 point -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.2</version>
             </plugin>
 
         </plugins>
