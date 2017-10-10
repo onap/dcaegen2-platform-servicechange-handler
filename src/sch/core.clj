@@ -92,24 +92,25 @@
   [config]
   (let [config-asdc (:asdcDistributionClient config)]
     (proxy [IConfiguration] []
-      (getAsdcAddress [] (:asdcAddress config-asdc))
-      (getUser [] (:user config-asdc))
-      (getPassword [] (:password config-asdc))
-      (getPollingInterval [] (:pollingInterval config-asdc))
-      (getPollingTimeout [] (:pollingTimeout config-asdc))
+      (getAsdcAddress [] (str (:asdcAddress config-asdc)))
+      (getUser [] (str (:user config-asdc)))
+      (getPassword [] (str (:password config-asdc)))
+      (getPollingInterval [] (int (:pollingInterval config-asdc)))
+      (getPollingTimeout [] (int (:pollingTimeout config-asdc)))
       ; Note: The following didn't work
       ; (. Arrays asList (. ArtifactTypeEnum values))
       ; Also, cannot just use a narrow list of artifact types in order
       ; to handle the deletion scenario.
       (getRelevantArtifactTypes [] (java.util.ArrayList.
                                       (get-dcae-artifact-types)))
-      (getConsumerGroup [] (:consumerGroup config-asdc))
-      (getConsumerID [] (:consumerId config-asdc))
-      (getEnvironmentName [] (:environmentName config-asdc))
-      (getKeyStorePath [] (:keyStorePath config-asdc))
-      (getKeyStorePassword [] (:keyStorePassword config-asdc))
-      (activateServerTLSAuth [] (:activateServerTLSAuth config-asdc))
-      (isFilterInEmptyResources [] (:isFilterInEmptyResources config-asdc))
+      (getConsumerGroup [] (str (:consumerGroup config-asdc)))
+      (getConsumerID [] (str (:consumerId config-asdc)))
+      (getEnvironmentName [] (str (:environmentName config-asdc)))
+      (getKeyStorePath [] (str (:keyStorePath config-asdc)))
+      (getKeyStorePassword [] (str (:keyStorePassword config-asdc)))
+      (activateServerTLSAuth [] (boolean (:activateServerTLSAuth config-asdc)))
+      (isFilterInEmptyResources [] (boolean (:isFilterInEmptyResources config-asdc)))
+      (isUseHttpsWithDmaap [] (contains? config-asdc :useHttpsWithDmaap) (Boolean/valueOf(str (:useHttpsWithDmaap config-asdc))) true)
       )))
 
 (defn run-distribution-client!

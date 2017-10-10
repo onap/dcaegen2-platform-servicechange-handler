@@ -46,7 +46,7 @@
                         :typeName "sample-blueprint",
                         :typeVersion 2,
                         :blueprintTemplate "Fake blueprint",
-                        :asdcServiceURL "/asdc/v1/catalog/services/9eaf59ee-2fe0-48a9-8d20-6f9b09ba807b/metadata"
+                        :asdcServiceURL "/sdc/v1/catalog/services/9eaf59ee-2fe0-48a9-8d20-6f9b09ba807b/metadata"
                         :serviceLocations ["CLLI1" "CLL2"] }
           ]
 

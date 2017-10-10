@@ -44,7 +44,7 @@
 
 (defn construct-service-path
   [service-uuid]
-  (str "/asdc/v1/catalog/services/" service-uuid "/metadata"))
+  (str "/sdc/v1/catalog/services/" service-uuid "/metadata"))
 
 
 (defn get-artifact!
