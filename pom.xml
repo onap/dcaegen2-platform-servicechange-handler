@@ -196,13 +196,18 @@
                     <baseImage>java:8-jre</baseImage>
                     <!-- NOTE: Couldn't figure out how to package the jar to be named: ${project.build.finalName}. This might be
                             because of the clojure maven plugin -->
-                    <entryPoint>["java", "-jar", "/opt/servicechange-handler.jar", "prod", "http://consul:8500/v1/kv/service-change-handler?raw=true"]</entryPoint>
+                    <cmd>["java", "-jar", "/opt/servicechange-handler.jar", "prod", "http://consul:8500/v1/kv/service-change-handler?raw=true"]</cmd>
                     <!-- copy the service's jar file from target into the root directory of the image -->
                     <resources>
                         <resource>
                             <targetPath>/opt</targetPath>
                             <directory>${project.build.directory}</directory>
                             <include>servicechange-handler.jar</include>
+                        </resource>
+                        <resource>
+                            <targetPath>/opt</targetPath>
+                            <directory>${project.basedir}/resources</directory>
+                            <include>health.sh</include>
                         </resource>
                     </resources>
                     <serverId>${onap.nexus.dockerregistry.daily}</serverId>
