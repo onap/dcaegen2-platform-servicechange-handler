@@ -27,14 +27,12 @@
 
 
 (defn create-asdc-conn
-
-  ([asdc-uri user password consumer-id]
-   [(uri asdc-uri) user password consumer-id])
-
   ([config]
-   (let [config-asdc (:asdcDistributionClient config)]
-     (create-asdc-conn (:asdcUri config-asdc) (:user config-asdc)
-                       (:password config-asdc) (:consumerId config-asdc))))
+   (let [config-asdc (:asdcDistributionClient config)
+         { :keys [asdcUri user password consumerId activateServerTLSAuth] } config-asdc]
+     ; The last entry is passed into clj-http's "insecure?" parameter which is
+     ; why "activateServerTLSAuth" is negated
+     [(uri asdcUri) user password consumerId (not activateServerTLSAuth)]))
   )
 
 
@@ -49,10 +47,11 @@
 
 (defn get-artifact!
   [connection artifact-path]
-  (let [[asdc-uri user password instance-id] connection
+  (let [[asdc-uri user password instance-id insecure?] connection
         target-uri (assoc asdc-uri :path artifact-path)
         resp (client/get (str target-uri) { :basic-auth [user password]
-                                            :headers { "X-ECOMP-InstanceID" instance-id } })]
+                                            :headers { "X-ECOMP-InstanceID" instance-id }
+                                            :insecure? insecure? })]
     (if (= (:status resp) 200)
       ; Response media type is application/octet-stream
       ; TODO: Use X-ECOMP-RequestID?
@@ -62,10 +61,11 @@
 
 (defn get-service-metadata!
   [connection service-uuid]
-  (let [[asdc-uri user password instance-id] connection
+  (let [[asdc-uri user password instance-id insecure?] connection
         target-uri (assoc asdc-uri :path (construct-service-path service-uuid))
         resp (client/get (str target-uri) { :basic-auth [user password]
-                                            :headers { "X-ECOMP-InstanceID" instance-id } })]
+                                            :headers { "X-ECOMP-InstanceID" instance-id }
+                                            :insecure? insecure? })]
     (if (= (:status resp) 200)
       ; Response media type is application/octet-stream
       ; TODO: Use X-ECOMP-RequestID?
