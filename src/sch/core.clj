@@ -110,7 +110,7 @@
       (getKeyStorePassword [] (str (:keyStorePassword config-asdc)))
       (activateServerTLSAuth [] (boolean (:activateServerTLSAuth config-asdc)))
       (isFilterInEmptyResources [] (boolean (:isFilterInEmptyResources config-asdc)))
-      (isUseHttpsWithDmaap [] (contains? config-asdc :useHttpsWithDmaap) (Boolean/valueOf(str (:useHttpsWithDmaap config-asdc))) true)
+      (isUseHttpsWithDmaap [] (boolean (:useHttpsWithDmaap config-asdc false)))
       )))
 
 (defn run-distribution-client!
