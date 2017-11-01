@@ -46,7 +46,7 @@
         <dependency>
             <groupId>org.openecomp.sdc.sdc-distribution-client</groupId>
             <artifactId>sdc-distribution-client</artifactId>
-            <version>1.1.50</version>
+            <version>1.1.32</version>
         </dependency>
         <dependency>
             <groupId>com.taoensso</groupId>
@@ -210,6 +210,10 @@
                             <include>health.sh</include>
                         </resource>
                     </resources>
+                    <exposes>
+                        <!-- This is an unused exposed port to be used just so registrator registers service change handler -->
+                        <expose>8079</expose>
+                    </exposes>
                     <serverId>${onap.nexus.dockerregistry.daily}</serverId>
                 </configuration>
             </plugin>
