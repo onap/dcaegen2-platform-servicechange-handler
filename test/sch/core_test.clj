@@ -1,7 +1,7 @@
 ; ============LICENSE_START=======================================================
 ; org.onap.dcae
 ; ================================================================================
-; Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+; Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
 ; ================================================================================
 ; Licensed under the Apache License, Version 2.0 (the "License");
 ; you may not use this file except in compliance with the License.
@@ -20,8 +20,29 @@
 
 (ns sch.core-test
   (:use (clojure test))
-  (:require [sch.core :refer [create-distribution-client-config]])
+  (:require [sch.core :refer [create-distribution-client-config deploy-artifacts-ex!]])
+  (:import (org.openecomp.sdc.utils DistributionStatusEnum))
   )
+
+
+(deftest test-deploy-artifacts-ex
+  (letfn [(deploy-artifacts-echo [to-post posted to-delete deleted inventory-uri
+                             service-metadata requests]
+            to-post posted to-delete deleted)
+          (send-dist-status-only-ok [artifact status]
+            (if (not= (. DistributionStatusEnum ALREADY_DEPLOYED) status)
+              (throw (Exception. "Distribution status should be ALREADY DEPLOYED"))
+              ))]
+    (let [service-metadata [{:resources [{:resourceInvariantUUID "123"
+                                          :artifacts [:artifactName "type-foo"]
+                                          }]}]
+          requests [{:asdcResourceId "123" :typeName "type-foo"}]
+          deploy-artifacts (partial deploy-artifacts-echo requests [] [] [])
+          nada (intern 'sch.handle 'deploy-artifacts! deploy-artifacts)
+          ]
+      (is (= nil (deploy-artifacts-ex! "http://inventory" service-metadata requests send-dist-status-only-ok)))
+      )))
+
 
 (deftest test-create-distribution-client-config
   (let [config { :asdcDistributionClient { :environmentName "ONAP-AMDOCS"
