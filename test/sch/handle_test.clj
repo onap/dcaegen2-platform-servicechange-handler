@@ -21,7 +21,8 @@
 (ns sch.handle-test
   (:use (clojure test))
   (:require [cheshire.core :refer [parse-stream]]
-            [sch.handle :refer :all])
+            [sch.handle :refer :all]
+            [clj-fakes.core :as f])
   )
 
 
@@ -45,10 +46,12 @@
           service-type-requests [{:typeName "some-type" :asdcServiceId "abc"
                                   :asdcResourceId "123" :typeVersion 3}]
           fake-get-service-types-insert (partial fake-get-service-types {})
-          nada (intern 'sch.inventory-client 'get-service-types! fake-get-service-types-insert)]
-      (is (= service-type-requests (find-service-types-to-post "http://inventory"
-                                                               service-type-requests)))
-      )))
+          ]
+      (f/with-fakes
+        (f/patch! #'sch.inventory-client/get-service-types! fake-get-service-types-insert)
+        (is (= service-type-requests (find-service-types-to-post "http://inventory"
+                                                                 service-type-requests)))
+      ))))
 
 
 (deftest test-post-service-types
@@ -56,11 +59,12 @@
             (assoc request :typeId "123"))]
     (let [service-type-requests [{:typeName "some-type" :asdcServiceId "abc"
                                   :asdcResourceId "123" :typeVersion 3}]
-          post-service-types #'sch.handle/post-service-types!
-          nada (intern 'sch.inventory-client 'post-service-type! fake-post-service-type)]
-      (is (= {:typeId "123" :typeName "some-type" :asdcServiceId "abc"
-              :asdcResourceId "123" :typeVersion 3}
-             (first (post-service-types "http://inventory" service-type-requests))))
+          post-service-types #'sch.handle/post-service-types!]
+      (f/with-fakes
+        (f/patch! #'sch.inventory-client/post-service-type! fake-post-service-type)
+        (is (= {:typeId "123" :typeName "some-type" :asdcServiceId "abc"
+                :asdcResourceId "123" :typeVersion 3}
+               (first (post-service-types "http://inventory" service-type-requests)))))
       )))
 
 
@@ -74,11 +78,11 @@
                                                  [{ :typeName "some-type"
                                                    :asdcServiceId "abc"
                                                    :asdcResourceId "456"
-                                                   :typeVersion 3 }])
-          nada (intern 'sch.inventory-client 'get-service-types!
-                       fake-get-service-types-delete)]
-      (is (= 1 (count (find-service-types-to-delete "http://inventory" "abc"
-                                                    service-type-requests))))
+                                                   :typeVersion 3 }])]
+      (f/with-fakes
+        (f/patch! #'sch.inventory-client/get-service-types! fake-get-service-types-delete)
+        (is (= 1 (count (find-service-types-to-delete "http://inventory" "abc"
+                                                      service-type-requests)))))
       )))
 
 
@@ -87,9 +91,10 @@
             type-id)]
     (let [service-type-requests [{:typeId "def" :typeName "some-type"
                                   :asdcServiceId "abc" :asdcResourceId "123" :typeVersion 3}]
-          delete-service-types #'sch.handle/delete-service-types!
-          nada (intern 'sch.inventory-client 'delete-service-type! fake-delete-service-type)]
-      (is (= "def" (first (delete-service-types "http://inventory" service-type-requests))))
+          delete-service-types #'sch.handle/delete-service-types!]
+      (f/with-fakes
+        (f/patch! #'sch.inventory-client/delete-service-type! fake-delete-service-type)
+        (is (= "def" (first (delete-service-types "http://inventory" service-type-requests)))))
       )))
 
 

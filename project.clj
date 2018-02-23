@@ -37,5 +37,8 @@
   :repositories [["onap nexus" "https://nexus.onap.org/content/repositories/snapshots/"]]
 
   :plugins [[lein-cloverage "1.0.9"]]
+  :profiles { :test { :dependencies [[clj-fakes "0.9.0"]] }
+              ; Added this for cloverage
+              :dev { :dependencies [[clj-fakes "0.9.0"]] } }
 
   )

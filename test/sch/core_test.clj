@@ -20,7 +20,8 @@
 
 (ns sch.core-test
   (:use (clojure test))
-  (:require [sch.core :refer [create-distribution-client-config deploy-artifacts-ex!]])
+  (:require [sch.core :refer [create-distribution-client-config deploy-artifacts-ex!]]
+            [clj-fakes.core :as f])
   (:import (org.openecomp.sdc.utils DistributionStatusEnum))
   )
 
@@ -38,9 +39,11 @@
                                           }]}]
           requests [{:asdcResourceId "123" :typeName "type-foo"}]
           deploy-artifacts (partial deploy-artifacts-echo requests [] [] [])
-          nada (intern 'sch.handle 'deploy-artifacts! deploy-artifacts)
           ]
-      (is (= nil (deploy-artifacts-ex! "http://inventory" service-metadata requests send-dist-status-only-ok)))
+      (f/with-fakes
+        (f/patch! #'sch.handle/deploy-artifacts! deploy-artifacts)
+        (is (= nil (deploy-artifacts-ex! "http://inventory" service-metadata requests
+                                         send-dist-status-only-ok))))
       )))
 
 

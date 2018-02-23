@@ -21,7 +21,8 @@
 (ns sch.inventory-client-test
   (:use (clojure test))
   (:require [sch.inventory-client :as ic]
-            [cheshire.core :refer [generate-string]])
+            [cheshire.core :refer [generate-string]]
+            [clj-fakes.core :as f])
   )
 
 
@@ -42,9 +43,10 @@
             {:status 200 :body result})]
     (let [results {:items [{:typeId "123"}]}
           conn (ic/create-inventory-conn "http://inventory")
-          fake-get-success (partial fake-get (generate-string results))
-          nada (intern 'clj-http.client 'get fake-get-success)]
-      (is (= (:items results) (ic/get-service-types! conn [])))
+          fake-get-success (partial fake-get (generate-string results))]
+      (f/with-fakes
+        (f/patch! #'clj-http.client/get fake-get-success)
+        (is (= (:items results) (ic/get-service-types! conn []))))
       )))
 
 
@@ -53,7 +55,8 @@
             {:status 200 :body result})]
     (let [result {:typeId "123"}
           conn (ic/create-inventory-conn "http://inventory")
-          fake-post-success (partial fake-post (generate-string result))
-          nada (intern 'clj-http.client 'post fake-post-success)]
-      (is (= result (ic/post-service-type! conn {})))
+          fake-post-success (partial fake-post (generate-string result))]
+      (f/with-fakes
+        (f/patch! #'clj-http.client/post fake-post-success)
+        (is (= result (ic/post-service-type! conn {}))))
       )))
