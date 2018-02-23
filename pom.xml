@@ -33,7 +33,7 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
     <groupId>org.onap.dcaegen2.platform</groupId>
     <artifactId>servicechange-handler</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <!-- Not sure why clojure-maven-plugin says packaging should be "clojure" -->
     <packaging>jar</packaging>
 
@@ -62,12 +62,12 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
         <dependency>
             <groupId>cheshire</groupId>
             <artifactId>cheshire</artifactId>
-            <version>5.6.3</version>
+            <version>5.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.openecomp.sdc.sdc-distribution-client</groupId>
             <artifactId>sdc-distribution-client</artifactId>
-            <version>1.1.32</version>
+            <version>1.2.3</version>
         </dependency>
         <dependency>
             <groupId>com.taoensso</groupId>

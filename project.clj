@@ -24,7 +24,7 @@
 (defproject service-change-handler "0.1.0"
   :description "Service change handler"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [cheshire/cheshire "5.6.3"]
+                 [cheshire/cheshire "5.8.0"]
                  [com.taoensso/timbre "4.7.4"]
                  [com.fzakaria/slf4j-timbre "0.3.2"]
                  [clj-http/clj-http "3.3.0"]
