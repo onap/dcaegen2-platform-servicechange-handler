@@ -24,7 +24,7 @@
             [sch.asdc-client :refer [construct-service-path]]
             [cheshire.core :refer [parse-string]]
             )
-  (:import (org.openecomp.sdc.utils ArtifactTypeEnum))
+  (:import (org.onap.sdc.utils ArtifactTypeEnum))
   (:gen-class))
 
 

@@ -30,10 +30,10 @@
             [sch.parse :refer [get-dcae-artifact-types pick-out-artifact]]
             [sch.util :refer [read-config]]
             )
-  (:import (org.openecomp.sdc.impl DistributionClientFactory)
-           (org.openecomp.sdc.api.consumer IConfiguration INotificationCallback
+  (:import (org.onap.sdc.impl DistributionClientFactory)
+           (org.onap.sdc.api.consumer IConfiguration INotificationCallback
                                             IDistributionStatusMessage)
-           (org.openecomp.sdc.utils DistributionActionResultEnum DistributionStatusEnum)
+           (org.onap.sdc.utils DistributionActionResultEnum DistributionStatusEnum)
            (com.google.gson Gson)
            )
   (:gen-class))

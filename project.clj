@@ -30,7 +30,7 @@
                  [clj-http/clj-http "3.3.0"]
                  [org.bovinegenius/exploding-fish "0.3.4"]
                  [clj-yaml/clj-yaml "0.4.0"]
-                 [org.openecomp.sdc.sdc-distribution-client/sdc-distribution-client "1.1.0-SNAPSHOT"]
+                 [org.onap.sdc.sdc-distribution-client/sdc-distribution-client "1.3.0"]
                  ]
 
   ; TODO: Fill in the onap maven repository info

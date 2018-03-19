@@ -22,7 +22,7 @@
   (:use (clojure test))
   (:require [sch.core :refer [create-distribution-client-config deploy-artifacts-ex!]]
             [clj-fakes.core :as f])
-  (:import (org.openecomp.sdc.utils DistributionStatusEnum))
+  (:import (org.onap.sdc.utils DistributionStatusEnum))
   )
 
 

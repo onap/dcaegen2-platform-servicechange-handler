@@ -27,7 +27,7 @@
             [sch.parse :refer [generate-dcae-service-type-requests
                                get-service-locations]]
             )
-  (:import (org.openecomp.sdc.utils DistributionStatusEnum))
+  (:import (org.onap.sdc.utils DistributionStatusEnum))
   (:gen-class))
 
 
