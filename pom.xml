@@ -47,7 +47,7 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
     </repositories>
 
     <properties>
-        <maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
+        <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
         <nexusproxy>https://nexus.onap.org</nexusproxy>
         <snapshots.path>content/repositories/snapshots/</snapshots.path>
         <releases.path>content/repositories/releases/</releases.path>
