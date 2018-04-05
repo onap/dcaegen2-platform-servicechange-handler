@@ -29,6 +29,7 @@
             [sch.inventory-client :refer [create-inventory-conn]]
             [sch.parse :refer [get-dcae-artifact-types pick-out-artifact]]
             [sch.util :refer [read-config]]
+            [clojure.string :as strlib]
             )
   (:import (org.onap.sdc.impl DistributionClientFactory)
            (org.onap.sdc.api.consumer IConfiguration INotificationCallback
@@ -93,6 +94,8 @@
   (let [config-asdc (:asdcDistributionClient config)]
     (proxy [IConfiguration] []
       (getAsdcAddress [] (str (:asdcAddress config-asdc)))
+      (getMsgBusAddress [] (java.util.ArrayList.
+                              (strlib/split (str (:msgBusAddress config-asdc)) #",")))
       (getUser [] (str (:user config-asdc)))
       (getPassword [] (str (:password config-asdc)))
       (getPollingInterval [] (int (:pollingInterval config-asdc)))
@@ -111,6 +114,7 @@
       (activateServerTLSAuth [] (boolean (:activateServerTLSAuth config-asdc)))
       (isFilterInEmptyResources [] (boolean (:isFilterInEmptyResources config-asdc)))
       (isUseHttpsWithDmaap [] (boolean (:useHttpsWithDmaap config-asdc false)))
+      (isConsumeProduceStatusTopic [] (boolean (:isConsumeProduceStatusTopic config-asdc false)))
       )))
 
 (defn run-distribution-client!

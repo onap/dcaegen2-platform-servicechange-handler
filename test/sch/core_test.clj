@@ -50,6 +50,7 @@
 (deftest test-create-distribution-client-config
   (let [config { :asdcDistributionClient { :environmentName "ONAP-AMDOCS"
                                            :asdcAddress "10.0.3.1:8443"
+                                           :msgBusAddress "message-router-hostname"
                                            :keyStorePassword nil
                                            :pollingInterval 20
                                            :consumerGroup "dcae"
@@ -66,5 +67,7 @@
         dcc (create-distribution-client-config config)
         ]
     (is (= (. dcc isUseHttpsWithDmaap) true))
+    (is (= (. dcc getMsgBusAddress) ["message-router-hostname"]))
+    (is (= (. dcc isConsumeProduceStatusTopic) false))
     )
   )
