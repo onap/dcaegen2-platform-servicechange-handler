@@ -213,6 +213,13 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.0.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.github.jnr</groupId>
+                        <artifactId>jnr-unixsocket</artifactId>
+                        <version>0.13</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
                     <maintainer>Michael Hwang</maintainer>
                     <imageName>${onap.nexus.dockerregistry.daily}/onap/${project.groupId}.${project.artifactId}</imageName>
