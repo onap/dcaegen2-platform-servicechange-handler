@@ -33,7 +33,7 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
     <groupId>org.onap.dcaegen2.platform</groupId>
     <artifactId>servicechange-handler</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
     <!-- Not sure why clojure-maven-plugin says packaging should be "clojure" -->
     <packaging>jar</packaging>
 
@@ -72,13 +72,13 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
         <dependency>
             <groupId>com.taoensso</groupId>
             <artifactId>timbre</artifactId>
-            <version>4.7.4</version>
+            <version>4.10.0</version>
         </dependency>
         <!-- Does magic so traditional Java loggers show up -->
         <dependency>
             <groupId>com.fzakaria</groupId>
             <artifactId>slf4j-timbre</artifactId>
-            <version>0.3.2</version>
+            <version>0.3.8</version>
         </dependency>
         <dependency>
             <groupId>clj-http</groupId>
