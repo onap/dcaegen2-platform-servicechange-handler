@@ -33,6 +33,10 @@
           (send-dist-status-only-ok [artifact status]
             (if (not= (. DistributionStatusEnum ALREADY_DEPLOYED) status)
               (throw (Exception. "Distribution status should be ALREADY DEPLOYED"))
+              ))
+          (send-comp-done-status-only-ok [msg artifact status]
+            (if (not= (. DistributionStatusEnum COMPONENT_DONE_OK) status)
+              (throw (Exception. "Distribution status should be COMPONENT DONE OK"))
               ))]
     (let [service-metadata [{:resources [{:resourceInvariantUUID "123"
                                           :artifacts [:artifactName "type-foo"]
@@ -43,7 +47,7 @@
       (f/with-fakes
         (f/patch! #'sch.handle/deploy-artifacts! deploy-artifacts)
         (is (= nil (deploy-artifacts-ex! "http://inventory" service-metadata requests
-                                         send-dist-status-only-ok))))
+                                         send-dist-status-only-ok send-comp-done-status-only-ok "" ""))))
       )))
 
 
