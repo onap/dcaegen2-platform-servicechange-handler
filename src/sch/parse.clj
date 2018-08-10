@@ -20,7 +20,7 @@
 
 (ns sch.parse
   (:require [clojure.java.io :refer :all]
-            [taoensso.timbre :as timbre :refer [info error]]
+            [clojure.tools.logging :as logger]
             [sch.asdc-client :refer [construct-service-path]]
             [cheshire.core :refer [parse-string]]
             )

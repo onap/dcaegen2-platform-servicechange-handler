@@ -25,12 +25,12 @@
   :description "Service change handler"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [cheshire/cheshire "5.8.0"]
-                 [com.taoensso/timbre "4.7.4"]
-                 [com.fzakaria/slf4j-timbre "0.3.2"]
+                 [org.clojure/tools.logging "0.4.0"]
                  [clj-http/clj-http "3.3.0"]
                  [org.bovinegenius/exploding-fish "0.3.4"]
                  [clj-yaml/clj-yaml "0.4.0"]
                  [org.onap.sdc.sdc-distribution-client/sdc-distribution-client "1.3.0"]
+                 [ch.qos.logback/logback-classic "1.2.1"]
                  ]
 
   ; TODO: Fill in the onap maven repository info

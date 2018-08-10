@@ -20,7 +20,7 @@
 
 (ns sch.asdc-client
   (:require [clj-http.client :as client]
-            [taoensso.timbre :as timbre :refer [error]]
+            [clojure.tools.logging :as logger :refer [debug error]]
             [cheshire.core :refer [parse-string]]
             [org.bovinegenius.exploding-fish :refer [uri param]])
   (:gen-class))
@@ -47,6 +47,7 @@
 
 (defn get-artifact!
   [connection artifact-path]
+  (debug (str "Entering get-artifact - artiface-path:" artifact-path))
   (let [[asdc-uri user password instance-id insecure?] connection
         target-uri (assoc asdc-uri :path artifact-path)
         resp (client/get (str target-uri) { :basic-auth [user password]
@@ -61,6 +62,7 @@
 
 (defn get-service-metadata!
   [connection service-uuid]
+  (debug (str "Entering get-service-metadta - service-uuid:" service-uuid))
   (let [[asdc-uri user password instance-id insecure?] connection
         target-uri (assoc asdc-uri :path (construct-service-path service-uuid))
         resp (client/get (str target-uri) { :basic-auth [user password]

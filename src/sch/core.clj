@@ -21,8 +21,7 @@
 (ns sch.core
   (:require [clojure.java.io :refer :all]
             [cheshire.core :refer [parse-stream parse-string]]
-            [taoensso.timbre :as timbre :refer [info error]]
-            [taoensso.timbre.appenders.3rd-party.rolling :refer [rolling-appender]]
+            [clojure.tools.logging :as logger :refer [debug info error]]
             [sch.handle :refer [handle-change-event! download-artifacts! deploy-artifacts!
                                 deployed-ok deployed-error deployed-already]]
             [sch.asdc-client :refer [get-service-metadata! create-asdc-conn get-consumer-id]]
@@ -30,10 +29,11 @@
             [sch.parse :refer [get-dcae-artifact-types pick-out-artifact]]
             [sch.util :refer [read-config]]
             [clojure.string :as strlib]
+            [postal.core :refer [send-message]]
             )
   (:import (org.onap.sdc.impl DistributionClientFactory)
            (org.onap.sdc.api.consumer IConfiguration INotificationCallback
-                                            IDistributionStatusMessage)
+                                            IDistributionStatusMessage IComponentDoneStatusMessage)
            (org.onap.sdc.utils DistributionActionResultEnum DistributionStatusEnum)
            (com.google.gson Gson)
            )
@@ -66,24 +66,74 @@
                   (str (.getDistributionMessageResult resp)))))
     ))
 
+(defn send-component-done-status!
+  "Convenience function used to send component done status messages"
+  [dist-client distribution-id consumer-id msg artifact status]
+  (let [dist-message (proxy [IComponentDoneStatusMessage] []
+                       (getDistributionID [] distribution-id)
+                       (getConsumerID [] consumer-id)
+                       (getTimestamp []
+                         (. java.lang.System currentTimeMillis))
+                       (getArtifactURL [] (:artifactURL artifact))
+                       (getComponentName [] "service-change-handler")
+                       (getStatus [] status))
+        resp (if (strlib/blank? msg)
+               (.sendComponentDoneStatus dist-client dist-message)
+               (.sendComponentDoneStatus dist-client dist-message "failed to deploy to inventory"))
+        ]
+    (if (not= (.getDistributionActionResult resp) (. DistributionActionResultEnum SUCCESS))
+      (error (str "Problem sending status: " (:artifactName artifact) ", "
+                  (str (.getDistributionMessageResult resp)))))
+    ))
+
 (defn deploy-artifacts-ex!
   "Enhanced deploy artifacts function
 
   After calling deploy-artifacts!, this method takes the results and sends out
   appropriate distribution status messages per artifact processed"
-  [inventory-uri service-metadata requests send-dist-status]
+  [inventory-uri service-metadata requests send-dist-status send-comp-done-status fromEmail toEmail]
   (let [[to-post posted to-delete deleted] (deploy-artifacts! inventory-uri service-metadata
                                                               requests)
         pick-out-artifact (partial pick-out-artifact service-metadata)]
 
-    (dorun (map #(send-dist-status (pick-out-artifact %)
+    (dorun (map #(do
+                   (send-dist-status (pick-out-artifact %)
                                    (. DistributionStatusEnum DEPLOY_OK))
+                   (send-comp-done-status "" (pick-out-artifact %)
+                                   (. DistributionStatusEnum COMPONENT_DONE_OK))
+                   (if (and (not (strlib/blank? fromEmail)) (not (strlib/blank? toEmail)))
+                     (do
+                       (debug (str "Sending notification from " fromEmail " to " toEmail))
+                       (try
+                         (send-message {:from fromEmail
+                                        :to [toEmail]
+                                        :subject "DCAE inventory blueprint downloaded from ASDC and inserted into inventory DB"
+                                        :body (str
+                                                "ASDC blueprint has been inserted into inventory <"
+                                                inventory-uri
+                                                ">.\n"
+                                                (pick-out-artifact %)
+                                              )
+                                       })
+                         (catch Exception e (error (str "caught exception from send-message" (.getMessage e))))
+                       )
+                     )
+                   )
+                 )
                 (deployed-ok to-post posted)))
-    (dorun (map #(send-dist-status (pick-out-artifact %)
+    (dorun (map #(do
+                   (send-dist-status (pick-out-artifact %)
                                    (. DistributionStatusEnum DEPLOY_ERROR))
+                   (send-comp-done-status "failed to deploy to inventory" (pick-out-artifact %)
+                                   (. DistributionStatusEnum COMPONENT_DONE_ERROR))
+                   )
                 (deployed-error to-post posted)))
-    (dorun (map #(send-dist-status (pick-out-artifact %)
+    (dorun (map #(do
+                   (send-dist-status (pick-out-artifact %)
                                    (. DistributionStatusEnum ALREADY_DEPLOYED))
+                   (send-comp-done-status "" (pick-out-artifact %)
+                                   (. DistributionStatusEnum COMPONENT_DONE_OK))
+                   )
                 (deployed-already requests to-post)))
     ; REVIEW: How about the deleted service types?
     ))
@@ -113,7 +163,7 @@
       (getKeyStorePassword [] (str (:keyStorePassword config-asdc)))
       (activateServerTLSAuth [] (boolean (:activateServerTLSAuth config-asdc)))
       (isFilterInEmptyResources [] (boolean (:isFilterInEmptyResources config-asdc)))
-      (isUseHttpsWithDmaap [] (boolean (:useHttpsWithDmaap config-asdc false)))
+      (isUseHttpsWithDmaap [] (boolean (:useHttpsWithDmaap config-asdc true)))
       (isConsumeProduceStatusTopic [] (boolean (:isConsumeProduceStatusTopic config-asdc false)))
       )))
 
@@ -122,7 +172,8 @@
 
   Uses the asdc distribution client and to poll for notification events and makes calls
   to handle those events"
-  [dist-client-config inventory-uri asdc-conn]
+  [dist-client-config inventory-uri asdc-conn fromEmail toEmail]
+  (debug "Entering run-distribution-client")
   (let [dist-client (. DistributionClientFactory createDistributionClient)
         dist-client-callback (proxy [INotificationCallback] []
                                (activateCallback [data]
@@ -136,12 +187,16 @@
                                  Discovered that the notification event and the service metadata
                                  data models are different. Use service metadata because its
                                  richer."
+                                 (debug "Entering dist-client-callback")
                                  (let [change-event (parse-string (.toJson (Gson.) data) true)
                                        service-id (:serviceUUID change-event)
                                        distribution-id (:distributionID change-event)
                                        service-metadata (get-service-metadata! asdc-conn
                                                                               service-id)
                                        send-dist-status (partial send-distribution-status!
+                                                                 dist-client distribution-id
+                                                                 (get-consumer-id asdc-conn))
+                                       send-comp-done-status (partial send-component-done-status!
                                                                  dist-client distribution-id
                                                                  (get-consumer-id asdc-conn))
                                        ]
@@ -159,7 +214,8 @@
                                                     % (. DistributionStatusEnum DOWNLOAD_OK))
                                                  artifacts))
                                      (deploy-artifacts-ex! inventory-uri service-metadata
-                                                           requests send-dist-status)
+                                                           requests send-dist-status send-comp-done-status
+                                                           fromEmail toEmail)
                                      )
 
                                    )))
@@ -171,26 +227,18 @@
         (error dist-client-init-result))
       )))
 
-(defn- setup-logging-rolling
-  "Setup logging with the rolling appender"
-  [{ {:keys [currentLogFilename rotationFrequency]} :logging }]
-  (let [rolling-params (when currentLogFilename { :path currentLogFilename })
-        rolling-params (when rotationFrequency
-                         (assoc rolling-params :pattern (keyword rotationFrequency)))]
-    (timbre/merge-config! { :level :debug :appenders { :rolling (rolling-appender rolling-params) } })
-    (info "Setup logging: Rolling appender" (if rolling-params rolling-params "DEFAULT"))
-  ))
-
-
 (defn -main [& args]
   (let [[mode config-path event-path] args
         config (read-config config-path)
         inventory-uri (create-inventory-conn config)
         asdc-conn (create-asdc-conn config)
+        fromEmail (get-in config [:notification :fromEmail])
+        toEmail (get-in config [:notification :toEmail])
         ]
 
-    (setup-logging-rolling config)
-
+    (if (and (not (strlib/blank? fromEmail)) (not (strlib/blank? toEmail)))
+      (debug "Email notification enabled")
+    )
     (if (= "DEV" (clojure.string/upper-case mode))
       (do
         (info "Development mode")
@@ -199,7 +247,7 @@
         )
       (run-distribution-client!
         (create-distribution-client-config config)
-        inventory-uri asdc-conn)
+        inventory-uri asdc-conn fromEmail toEmail)
       )
 
     (info "Done"))
