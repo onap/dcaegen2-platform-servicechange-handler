@@ -20,7 +20,7 @@
 
 (ns sch.handle
   (:require [clojure.java.io :refer :all]
-            [taoensso.timbre :as timbre :refer [info error]]
+            [clojure.tools.logging :as logger :refer [info error]]
             [sch.inventory-client :refer [get-service-types! post-service-type!
                                           delete-service-type!]]
             [sch.asdc-client :refer [get-artifact!]]

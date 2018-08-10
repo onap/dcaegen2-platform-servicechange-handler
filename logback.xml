@@ -1,0 +1,108 @@
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+
+    <property name="LOG_DIR" value="logs" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="metricsAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_DIR}/metrics.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_DIR}/metrics-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 2 days worth of history, but at most 200MB -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>2</maxHistory>
+            <totalSizeCap>200MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS+00:00}|%d{yyyy-MM-dd'T'HH:mm:ss.SSS+00.00}|NULL|UNKONWN|%thread||service-change-handler||||COMPLETE|0|OK||%level||||||%class||||%method|%line|||%msg%n</pattern>
+        </encoder>
+    </appender>
+	
+    <appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <file>${LOG_DIR}/debug.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_DIR}/debug-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 2 days worth of history, but at most 200MB -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>2</maxHistory>
+            <totalSizeCap>200MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS+00.00}|NULL|%thread:%level:%class:%method:%line:%msg%n</pattern>
+        </encoder>
+    </appender>
+	
+    <appender name="auditAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_DIR}/audit.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/audit-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>2</maxHistory>
+            <totalSizeCap>200MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS+00:00}|%d{yyyy-MM-dd'T'HH:mm:ss.SSS+00:00}|NULL|UNKNOWN|%thread||service-change-handler||COMPLETE|0|OK||%level||||||%class|||%method|%line|||%msg%n</pattern>
+        </encoder>
+    </appender>
+	
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <file>${LOG_DIR}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_DIR}/error-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 2 days worth of history, but at most 200MB -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>2</maxHistory>
+            <totalSizeCap>200MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS+00.00}|NULL|%thread|service-change-handler||||%level|500|ERROR|%class:%method:%line:%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="metricsLogger" level="info" additivity="false">
+        <appender-ref ref="metricsAppender" />
+    </logger>
+
+    <logger name="debugLogger" level="debug" additivity="false">
+        <appender-ref ref="debugAppender" />
+    </logger>
+
+    <logger name="auditLogger" level="info" additivity="false">
+        <appender-ref ref="auditAppender" />
+    </logger> -->
+
+    <logger name="errorLogger" level="error" additivity="false">
+        <appender-ref ref="errorAppender" />
+    </logger>
+
+    <root level="debug">
+        <appender-ref ref="metricsAppender" />
+        <appender-ref ref="debugAppender" />
+        <appender-ref ref="auditAppender" />
+        <appender-ref ref="errorAppender" />
+    </root>
+
+</configuration>

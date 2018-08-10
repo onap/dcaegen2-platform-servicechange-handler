@@ -33,7 +33,7 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
     <groupId>org.onap.dcaegen2.platform</groupId>
     <artifactId>servicechange-handler</artifactId>
-    <version>1.1.4</version>
+    <version>1.2.0</version>
     <!-- Not sure why clojure-maven-plugin says packaging should be "clojure" -->
     <packaging>jar</packaging>
 
@@ -65,20 +65,19 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
             <version>5.8.0</version>
         </dependency>
         <dependency>
+            <groupId>com.draines</groupId>
+            <artifactId>postal</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.onap.sdc.sdc-distribution-client</groupId>
             <artifactId>sdc-distribution-client</artifactId>
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.taoensso</groupId>
-            <artifactId>timbre</artifactId>
-            <version>4.10.0</version>
-        </dependency>
-        <!-- Does magic so traditional Java loggers show up -->
-        <dependency>
-            <groupId>com.fzakaria</groupId>
-            <artifactId>slf4j-timbre</artifactId>
-            <version>0.3.8</version>
+            <groupId>org.clojure</groupId>
+            <artifactId>tools.logging</artifactId>
+            <version>0.4.0</version>
         </dependency>
         <dependency>
             <groupId>clj-http</groupId>
@@ -94,6 +93,11 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
             <groupId>clj-yaml</groupId>
             <artifactId>clj-yaml</artifactId>
             <version>0.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+                <version>1.2.1</version>
         </dependency>
         <dependency>
             <groupId>clj-fakes</groupId>

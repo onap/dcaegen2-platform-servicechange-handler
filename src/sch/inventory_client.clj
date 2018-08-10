@@ -20,7 +20,7 @@
 
 (ns sch.inventory-client
   (:require [clj-http.client :as client]
-            [taoensso.timbre :as timbre :refer [error]]
+            [clojure.tools.logging :as logger :refer [error]]
             [cheshire.core :refer [parse-string]]
             [org.bovinegenius.exploding-fish :refer [uri param]])
   (:gen-class))
