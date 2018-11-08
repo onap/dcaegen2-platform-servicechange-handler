@@ -6,7 +6,7 @@ Application that is responsible for polling for ASDC distribution notification e
 * Identifying whether its complementary DCAE service type resource in DCAE inventory has changed
 * Taking action
     - Insert a new DCAE service type
-    - Update an exisintg DCAE service type
+    - Update an existing DCAE service type
     - Deactivate an existing DCAE service type
 * Send appropriate acknowledgements back
 
@@ -20,7 +20,7 @@ Two modes of operation: development and production.
 
 ### Development
 
-The application in development mode does not actually pull from ASDC but rather takes in a file that contains a single ASDC notfication event as a third argument and processes it.
+The application in development mode does not actually pull from ASDC but rather takes in a file that contains a single ASDC notification event as a third argument and processes it.
 
 Usage of development mode:
 
