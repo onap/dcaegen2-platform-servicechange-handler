@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "db432a9e_b67b7943",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 481
+      },
+      "writtenOn": "2019-06-18T17:06:07Z",
+      "side": 1,
+      "message": "This version needs to be a Snapshot version. \nThe main artifact\u0027s development should be a snapshot since the new release jobs take care of taking that snapshot and producing a release candidate out of it.",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 28
+      },
+      "revId": "144df3dfd787567d197d5843ffb5697224232416",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
