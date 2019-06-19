@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Rajendra Jaiswal <rajendra.jaiswal@ericsson.com>
+Code-Review+2: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-by: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-at: Wed, 19 Jun 2019 19:30:06 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/platform/servicechange-handler/+/90140
+Project: dcaegen2/platform/servicechange-handler
+Branch: refs/heads/master
