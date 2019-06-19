@@ -22,6 +22,30 @@
       "revId": "144df3dfd787567d197d5843ffb5697224232416",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ed12c1fb_65d87b26",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5064
+      },
+      "writtenOn": "2019-06-19T07:46:57Z",
+      "side": 1,
+      "message": "Done in this commit:\nhttps://gerrit.onap.org/r/#/c/dcaegen2/platform/servicechange-handler/+/90140/",
+      "parentUuid": "db432a9e_b67b7943",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 28
+      },
+      "revId": "144df3dfd787567d197d5843ffb5697224232416",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
