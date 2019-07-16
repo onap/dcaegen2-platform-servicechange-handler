@@ -222,6 +222,10 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
                         <imageTag>latest</imageTag>
                     </imageTags>
                     <baseImage>java:8-jre</baseImage>
+                    <user>sch</user>
+                    <runs>
+                        <run>adduser --system --group sch</run>
+                    </runs>
                     <!-- NOTE: Couldn't figure out how to package the jar to be named: ${project.build.finalName}. This might be
                             because of the clojure maven plugin -->
                     <cmd>["java", "-jar", "/opt/servicechange-handler.jar", "prod", "http://consul:8500/v1/kv/service-change-handler?raw=true"]</cmd>
