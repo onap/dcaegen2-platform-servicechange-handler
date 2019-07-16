@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## []
 
 * Add non-root user in Docker image so that the inventory service can be run in non-privileged mode for security reasons DCAEGEN2-1555
+* Change base image to alpine based DCAEGEN2-1566
 
 ## [1.1.3]
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 ================================================================================
-Copyright (c) 2016-2018 AT&T Intellectual Property. All rights reserved.
+Copyright (c) 2016-2019 AT&T Intellectual Property. All rights reserved.
 ================================================================================
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -221,10 +221,11 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
                         <imageTag>${project.version}</imageTag>
                         <imageTag>latest</imageTag>
                     </imageTags>
-                    <baseImage>java:8-jre</baseImage>
+                    <baseImage>openjdk:8-jre-alpine</baseImage>
                     <user>sch</user>
                     <runs>
-                        <run>adduser --system --group sch</run>
+                        <run>addgroup -S sch</run>
+                        <run>adduser -S -G sch sch</run>
                     </runs>
                     <!-- NOTE: Couldn't figure out how to package the jar to be named: ${project.build.finalName}. This might be
                             because of the clojure maven plugin -->
