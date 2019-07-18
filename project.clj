@@ -21,7 +21,7 @@
 ; Using lein for REPL and testing because couldn't get Maven clojure plugin to work
 ; for these functional areas.
 
-(defproject service-change-handler "0.1.0"
+(defproject service-change-handler "1.3.0"
   :description "Service change handler"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [cheshire/cheshire "5.8.0"]

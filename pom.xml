@@ -29,7 +29,7 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
     <groupId>org.onap.dcaegen2.platform</groupId>
     <artifactId>servicechange-handler</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
     <!-- Not sure why clojure-maven-plugin says packaging should be "clojure" -->
     <packaging>jar</packaging>
 
@@ -224,12 +224,15 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
                     <baseImage>openjdk:8-jre-alpine</baseImage>
                     <user>sch</user>
                     <runs>
+                        <run>apk update</run>
+                        <run>apk add bash</run>
+                        <run>chmod 666 /etc/ssl/certs/java/cacerts</run>
                         <run>addgroup -S sch</run>
                         <run>adduser -S -G sch sch</run>
                     </runs>
                     <!-- NOTE: Couldn't figure out how to package the jar to be named: ${project.build.finalName}. This might be
                             because of the clojure maven plugin -->
-                    <cmd>["java", "-jar", "/opt/servicechange-handler.jar", "prod", "http://consul:8500/v1/kv/service-change-handler?raw=true"]</cmd>
+                    <cmd>["sch.sh"]</cmd>
                     <!-- copy the service's jar file from target into the root directory of the image -->
                     <resources>
                         <resource>
@@ -241,6 +244,7 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
                             <targetPath>/opt</targetPath>
                             <directory>${project.basedir}/resources</directory>
                             <include>health.sh</include>
+                            <include>sch.sh</include>
                         </resource>
                     </resources>
                     <exposes>
