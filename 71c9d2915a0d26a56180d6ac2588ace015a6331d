@@ -16,6 +16,24 @@
       "revId": "71c9d2915a0d26a56180d6ac2588ace015a6331d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1bf523fc_c5430555",
+        "filename": "resources/sch.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2019-07-22T14:00:29Z",
+      "side": 1,
+      "message": "The use of consul as source of configuration was there before as the cmd default.  I just didn\u0027t change it.  I have changes lined up on the oom side that overrides this default with the local file approach and I also have changes to the inventory URL to use https.\n\nI can change this to the local file path in the oom chart for SCH.  I can also alternatively just throw an error saying the SCH_ARGS variable hasn\u0027t been set.  I think I\u0027d rather do that..",
+      "parentUuid": "76a14e06_4d8de89c",
+      "revId": "71c9d2915a0d26a56180d6ac2588ace015a6331d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
