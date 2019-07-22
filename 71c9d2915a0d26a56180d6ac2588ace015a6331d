@@ -34,6 +34,41 @@
       "revId": "71c9d2915a0d26a56180d6ac2588ace015a6331d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c2a5758_f1211e30",
+        "filename": "resources/sch.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-07-22T17:41:41Z",
+      "side": 1,
+      "message": "In the Dublin release, we started deploying SCH using Helm.  The Helm chart specified the startup command as follows:\n          command: [\"java\"]\n          args:\n            - \"-jar\"           \n            - \"/opt/servicechange-handler.jar\"\n            - \"prod\"\n            - \"/opt/config.json\"\nIf we don\u0027t change this chart, we won\u0027t invoke the sch.sh script. But if we do change the chart to run \"sch.sh\", the SCH will go looking in Consul for a configuration that isn\u0027t there.",
+      "parentUuid": "1bf523fc_c5430555",
+      "revId": "71c9d2915a0d26a56180d6ac2588ace015a6331d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31be9f17_af1b0db7",
+        "filename": "resources/sch.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-07-22T17:41:41Z",
+      "side": 1,
+      "message": "I am asking for this line to read SCH_ARGS\u003d\"prod /opt/config.json\".\nOr, if you really intend to go back to using Consul as the source of config information, I\u0027d like to know how the information will be put there.",
+      "revId": "71c9d2915a0d26a56180d6ac2588ace015a6331d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
