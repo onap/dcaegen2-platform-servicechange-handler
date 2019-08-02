@@ -1,0 +1,4 @@
+distribution_type: 'maven'
+version: '1.3.0'
+project: 'dcaegen2-platform-servicechange-handler'
+log_dir: 'dcaegen2-platform-servicechange-handler-maven-stage-master/38/'
