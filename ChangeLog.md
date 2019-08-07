@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.2]
+
+* DCAEGEN2-1718
+
 ## [1.3.0]
 
 * Add non-root user in Docker image so that the inventory service can be run in non-privileged mode for security reasons DCAEGEN2-1555
