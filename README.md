@@ -46,7 +46,7 @@ java -jar dcae-service-change-handler-0.1.0.jar prod http://consul:8500/v1/kv/se
 
 #### Use script
 
-[`sch.sh`](resources/sch.sh) is a script to run service change handler that connects with inventory using HTTPS.  The script attempts to add a custom CA cert to the OS's key store `/etc/ssl/certs/java/cacerts` and then launches service change handler.  The custom CA cert is used to validate the server-side cert provided by inventory at runtime.
+[`sch.sh`](resources/sch.sh) is a script to run service change handler that connects with inventory using HTTPS.  The script attempts to add a custom CA cert to the OS's key store `/usr/local/openjdk-11/lib/security/cacerts` and then launches service change handler.  The custom CA cert is used to validate the server-side cert provided by inventory at runtime.
 
 The script uses the following environment variables:
 
