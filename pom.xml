@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 ================================================================================
-Copyright (c) 2016-2019 AT&T Intellectual Property. All rights reserved.
+Copyright (c) 2016-2020 AT&T Intellectual Property. All rights reserved.
 ================================================================================
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
     <groupId>org.onap.dcaegen2.platform</groupId>
     <artifactId>servicechange-handler</artifactId>
-    <version>1.3.2-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
     <!-- Not sure why clojure-maven-plugin says packaging should be "clojure" -->
     <packaging>jar</packaging>
 
@@ -144,10 +144,9 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5</version>
+                <version>3.8.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <release>11</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -214,24 +213,25 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.0.0</version>
                 <configuration>
-                    <maintainer>Michael Hwang</maintainer>
+                    <maintainer>Terry Schmalzried</maintainer>
                     <imageName>${onap.nexus.dockerregistry.daily}/onap/${project.groupId}.${project.artifactId}</imageName>
                     <imageTags>
                         <imageTag>${project.version}-${maven.build.timestamp}Z</imageTag>
                         <imageTag>${project.version}</imageTag>
                         <imageTag>latest</imageTag>
                     </imageTags>
-                    <baseImage>openjdk:8-jre-alpine</baseImage>
-                    <user>sch</user>
+                    <baseImage>openjdk:11-jre-slim</baseImage>
+                    <user>onap</user>
                     <runs>
-                        <run>apk update</run>
-                        <run>apk add bash</run>
-                        <run>chmod 666 /etc/ssl/certs/java/cacerts</run>
-                        <run>addgroup -S sch</run>
-                        <run>adduser -S -G sch sch</run>
+                        <!--run>apk update</run-->
+                        <!--run>apk add bash</run-->
+                        <run>chmod 666 /usr/local/openjdk-11/lib/security/cacerts</run>
+                        <!--run>addgroup -S sch</run-->
+                        <!--run>adduser -S -G sch sch</run-->
                     </runs>
                     <!-- NOTE: Couldn't figure out how to package the jar to be named: ${project.build.finalName}. This might be
                             because of the clojure maven plugin -->
+                    <entrypoint></entrypoint>
                     <cmd>["/opt/sch.sh"]</cmd>
                     <!-- copy the service's jar file from target into the root directory of the image -->
                     <resources>
