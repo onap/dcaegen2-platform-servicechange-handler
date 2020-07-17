@@ -220,7 +220,7 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
                         <imageTag>${project.version}</imageTag>
                         <imageTag>latest</imageTag>
                     </imageTags>
-                    <baseImage>openjdk:11-jre-slim</baseImage>
+                    <baseImage>onap/integration-java11:7.0.0</baseImage>
                     <user>onap</user>
                     <runs>
                         <run>chmod 666 /usr/local/openjdk-11/lib/security/cacerts</run>
