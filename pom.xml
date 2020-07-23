@@ -226,8 +226,8 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
                     <user>onap</user>
                     <!-- NOTE: Couldn't figure out how to package the jar to be named: ${project.build.finalName}. This might be
                             because of the clojure maven plugin -->
-                    <entrypoint></entrypoint>
-                    <cmd>["/opt/sch.sh"]</cmd>
+                    <entryPoint>["/bin/sh", "-c", "/opt/sch.sh"]</entryPoint>
+                    <!--cmd></cmd-->
                     <!-- copy the service's jar file from target into the root directory of the image -->
                     <resources>
                         <resource>
