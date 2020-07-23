@@ -39,7 +39,7 @@ fi
 
 # Add the cacert to validate inventory's cert to support TLS.  This command is
 # allowed to fail when there is no need for https.
-# NOTE: This user must have permission to write to /etc/ssl/certs/java/cacerts
+# NOTE: This user must have permission to write to /usr/local/openjdk-11/lib/security/cacerts
 keytool -importcert -file $PATH_TO_CACERT -keystore /usr/local/openjdk-11/lib/security/cacerts -alias "inventory" -noprompt -storepass changeit
 
 # Now launch SCH
