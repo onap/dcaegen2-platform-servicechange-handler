@@ -1,7 +1,7 @@
 ; ============LICENSE_START=======================================================
 ; org.onap.dcae
 ; ================================================================================
-; Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+; Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 ; ================================================================================
 ; Licensed under the Apache License, Version 2.0 (the "License");
 ; you may not use this file except in compliance with the License.
@@ -21,24 +21,24 @@
 ; Using lein for REPL and testing because couldn't get Maven clojure plugin to work
 ; for these functional areas.
 
-(defproject service-change-handler "1.3.2"
+(defproject service-change-handler "1.4.0"
   :description "Service change handler"
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [cheshire/cheshire "5.8.0"]
-                 [org.clojure/tools.logging "0.4.0"]
-                 [clj-http/clj-http "3.3.0"]
-                 [org.bovinegenius/exploding-fish "0.3.4"]
+  :dependencies [[org.clojure/clojure "1.10.1"]
+                 [cheshire/cheshire "5.10.0"]
+                 [org.clojure/tools.logging "1.1.0"]
+                 [clj-http/clj-http "3.10.1"]
+                 [org.bovinegenius/exploding-fish "0.3.6"]
                  [clj-yaml/clj-yaml "0.4.0"]
                  [org.onap.sdc.sdc-distribution-client/sdc-distribution-client "1.3.0"]
-                 [ch.qos.logback/logback-classic "1.2.1"]
+                 [ch.qos.logback/logback-classic "1.2.3"]
                  ]
 
   ; TODO: Fill in the onap maven repository info
   :repositories [["onap nexus" "https://nexus.onap.org/content/repositories/snapshots/"]]
 
   :plugins [[lein-cloverage "1.0.9"]]
-  :profiles { :test { :dependencies [[clj-fakes "0.9.0"]] }
+  :profiles { :test { :dependencies [[clj-fakes "0.12.0"]] }
               ; Added this for cloverage
-              :dev { :dependencies [[clj-fakes "0.9.0"]] } }
+              :dev { :dependencies [[clj-fakes "0.12.0"]] } }
 
   )
