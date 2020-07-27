@@ -1,6 +1,6 @@
 #!/bin/bash
 # ================================================================================
-# Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,8 +40,7 @@ fi
 # Add the cacert to validate inventory's cert to support TLS.  This command is
 # allowed to fail when there is no need for https.
 # NOTE: This user must have permission to write to /usr/local/openjdk-11/lib/security/cacerts
-keytool -importcert -file $PATH_TO_CACERT -keystore /usr/local/openjdk-11/lib/security/cacerts -alias "inventory" -noprompt -storepass changeit
+keytool -importcert -file $PATH_TO_CACERT -cacerts -alias "inventory" -noprompt -storepass changeit
 
 # Now launch SCH
 java -jar /opt/servicechange-handler.jar $SCH_ARGS
-

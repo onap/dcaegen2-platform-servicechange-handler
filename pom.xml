@@ -220,13 +220,16 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
                         <imageTag>${project.version}</imageTag>
                         <imageTag>latest</imageTag>
                     </imageTags>
-                    <baseImage>onap/integration-java11:7.0.0</baseImage>
+                    <baseImage>openjdk:11.0.6-jre-slim</baseImage>
                     <runs>
+                        <run>chmod 666 /usr/local/openjdk-11/lib/security/cacerts</run>
+                        <run>groupadd -r sch</run>
+                        <run>useradd -ms /bin/bash sch -g sch</run>
                     </runs>
-                    <user>onap</user>
+                    <user>sch</user>
                     <!-- NOTE: Couldn't figure out how to package the jar to be named: ${project.build.finalName}. This might be
                             because of the clojure maven plugin -->
-                    <entryPoint>["/bin/sh", "-c", "/opt/sch.sh"]</entryPoint>
+                    <entryPoint>["/opt/sch.sh"]</entryPoint>
                     <!-- copy the service's jar file from target into the root directory of the image -->
                     <resources>
                         <resource>
