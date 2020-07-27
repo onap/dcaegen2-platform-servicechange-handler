@@ -24,7 +24,7 @@
 (defproject service-change-handler "1.4.0"
   :description "Service change handler"
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [cheshire/cheshire "5.10.0"]
+                 [cheshire/cheshire "5.9.0"]
                  [org.clojure/tools.logging "1.1.0"]
                  [clj-http/clj-http "3.10.1"]
                  [org.bovinegenius/exploding-fish "0.3.6"]
