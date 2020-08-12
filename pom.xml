@@ -29,7 +29,7 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
     <groupId>org.onap.dcaegen2.platform</groupId>
     <artifactId>servicechange-handler</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.4.0</version>
     <!-- Not sure why clojure-maven-plugin says packaging should be "clojure" -->
     <packaging>jar</packaging>
 
