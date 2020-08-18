@@ -1,0 +1,9 @@
+distribution_type: 'container'
+version: '1.4.0'
+project: 'dcaegen2-platform-servicechange-handler'
+log_dir: 'dcaegen2-platform-servicechange-handler-maven-docker-stage-master/423/'
+containers:
+  - name: 'org.onap.dcaegen2.platform.servicechange-handler'
+    version: '1.4.0-20200812T110417ZZ'
+container_release_tag: '1.4.0'
+ref: 'be6f932b74729c55f77bf504c4d07b625043564e'
